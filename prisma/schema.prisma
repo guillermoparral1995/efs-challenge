@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  in_review
+  approved
+  rejected
+}
+
+model Application {
+  id    Int     @id @default(autoincrement())
+  name  String 
+  description String  
+  status Status @default(in_review)
+}
