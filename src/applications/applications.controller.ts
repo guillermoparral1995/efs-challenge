@@ -3,12 +3,16 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
+  ParseIntPipe,
+  Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
 import { ApplicationDto } from './dto/application.dto';
+import { FindAllQueryDto } from './dto/findAllQuery.dto';
 
 @Controller('applications')
 export class ApplicationsController {
@@ -19,26 +23,26 @@ export class ApplicationsController {
     return this.applicationsService.create(createApplicationDto);
   }
 
-  @Get()
-  findAll() {
-    return this.applicationsService.findAll();
-  }
-
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.applicationsService.findOne(+id);
+  findById(@Param('id', ParseIntPipe) id: number) {
+    return this.applicationsService.findById(id);
   }
 
-  @Patch(':id')
+  @Get()
+  findAll(@Query(ValidationPipe) query: FindAllQueryDto) {
+    return this.applicationsService.findAll(query);
+  }
+
+  @Put(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateApplicationDto: ApplicationDto,
   ) {
-    return this.applicationsService.update(+id, updateApplicationDto);
+    return this.applicationsService.update(id, updateApplicationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.applicationsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.applicationsService.remove(id);
   }
 }
