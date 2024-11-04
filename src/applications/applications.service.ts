@@ -95,7 +95,7 @@ export class ApplicationsService {
       return response;
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        this.handlePrismaError(e);
+        this.handlePrismaError(e, id);
       }
       throw e;
     }
